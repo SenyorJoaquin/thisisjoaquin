@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Lab | Joaquin Tolentino</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Tactical Layout - Three-Column Grid */
+        .playground-wrapper { 
+            display: grid; 
+            grid-template-columns: 1.2fr 1fr 1.5fr; 
+            gap: 1.5rem; 
+            margin: 3rem 0; 
+            align-items: start;
+            width: 100%;
+        }
+        
+        .panel { 
+            background: #0d0d0d; 
+            padding: 2rem; 
+            border: 1px solid #222; 
+            height: 620px; 
+            display: flex; 
+            flex-direction: column;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        
+        .panel h3 { 
+            color: #fff; 
+            font-family: 'Bebas Neue'; 
+            font-size: 1.8rem;
+            letter-spacing: 2px; 
+            margin-bottom: 1.5rem; 
+            border-bottom: 2px solid #333; 
+            padding-bottom: 0.5rem; 
+        }
+
+        /* Victim UI Contrast (Stark White) */
+        .victim-panel { background: #f8f8f8; border: 1px solid #ddd; }
+        .victim-panel h3 { color: #000; border-bottom: 2px solid #000; }
+        .victim-window { 
+            background: #ffffff; 
+            color: #111; 
+            flex-grow: 1; 
+            padding: 1.5rem; 
+            overflow-y: auto; 
+            border: 4px solid #000;
+        }
+        .comment { 
+            background: #ffffff; 
+            color: #000;
+            padding: 1rem; 
+            margin-bottom: 1rem; 
+            border: 1px solid #eee;
+            border-left: 8px solid #000; 
+            font-size: 0.85rem; 
+            word-break: break-all; 
+        }
+
+        /* Hacker Input */
+        textarea { 
+            width: 100%; 
+            flex-grow: 1; 
+            background: #000; 
+            color: #00ff00; 
+            border: 1px solid #00ff00; 
+            padding: 1rem; 
+            font-family: 'Courier New', monospace; 
+            outline: none; 
+            resize: none; 
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-pill { display: inline-block; padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 2rem; }
+        .pill-danger { background: #ff3333; color: #fff; }
+        .pill-success { background: #00ff00; color: #000; }
+
+        /* High-Contrast Analysis Sidebar */
+        .analysis-content { color: #eeeeee; font-size: 0.85rem; line-height: 1.6; overflow-y: auto; }
+        .analysis-content h5 { color: #ffffff; text-transform: uppercase; margin-top: 1.2rem; font-size: 0.75rem; letter-spacing: 1px; border-left: 3px solid #ff3333; padding-left: 10px; margin-bottom: 0.5rem; font-weight: 700; }
+        .analysis-content p { margin-bottom: 0.8rem; }
+        .logic-card { background: #1a1a1a; padding: 1rem; border: 1px solid #333; margin-top: 1rem; }
+
+        /* Floating Nav */
+        .floating-nav { position: fixed; right: 2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.5rem; z-index: 2000; }
+        .nav-dot { width: 50px; height: 50px; background: #000; color: #fff; border: 1px solid #333; display: flex; align-items: center; justify-content: center; text-decoration: none; font-family: 'Bebas Neue', sans-serif; font-size: 0.8rem; transition: 0.3s ease; }
+        .nav-dot:hover { background: #ff3333; width: 140px; }
+        .nav-dot span { display: none; margin-left: 10px; }
+        .nav-dot:hover span { display: inline; }
+
+        /* Modal & Payload Library */
+        #payload-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 3000; padding: 2rem; }
+        .modal-content { max-width: 1100px; margin: auto; background: #fff; color: #000; padding: 2rem; max-height: 90vh; overflow-y: auto; }
+        .tutorial-box { background: #f4f4f4; border-left: 5px solid #ff3333; padding: 1.5rem; margin-bottom: 2rem; font-size: 0.9rem; line-height: 1.6; }
+        .payload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .payload-card { position: relative; border: 2px solid #000; padding: 1.5rem; cursor: pointer; transition: 0.3s; }
+        .payload-card:hover { background: #000; color: #fff; }
+        .payload-card code { display: block; background: #eee; padding: 0.8rem; margin-top: 1rem; font-size: 0.8rem; pointer-events: none; }
+        .payload-desc { display: none; position: absolute; bottom: 105%; left: 0; width: 100%; background: #ff3333; color: #fff; padding: 1rem; z-index: 10; font-size: 0.85rem; font-weight: 600; }
+        .payload-card:hover .payload-desc { display: block; }
+
+        @media (max-width: 1400px) {
+            .playground-wrapper { grid-template-columns: 1fr; }
+            .panel { height: auto; min-height: 500px; }
+            .floating-nav { display: none; }
+        }
+    </style>
+</head>
+<body class="project-page">
+
+    <div class="floating-nav">
+        <a href="#lab-top" class="nav-dot">LAB <span>EXPERIMENT</span></a>
+        <a href="#story-top" class="nav-dot">BIO <span>PROJECT STORY</span></a>
+        <a href="#arch-top" class="nav-dot">ENG <span>ARCHITECTURE</span></a>
+        <a href="#trench-top" class="nav-dot">LOG <span>THE TRENCHES</span></a>
+    </div>
+
+    <nav class="navbar solid-nav">
+        <a href="index.html" class="back-link">← Back to Index</a>
+        <div class="logo">JT.</div>
+    </nav>
+
+    <header class="article-header" id="lab-top">
+        <p class="article-category animate-on-scroll">Cybersecurity Education</p>
+        <h1 class="article-title animate-on-scroll">XSS Live Lab</h1>
+    </header>
+
+    <main class="article-content" style="max-width: 1600px; margin: auto; padding: 0 5%;">
+        <p class="lead animate-on-scroll" style="font-weight: 600; color: #000; font-size: 1.4rem;">
+            A technical training environment built to deconstruct DOM-based vulnerabilities and implement hardened sanitization protocols.
+        </p>
+
+        <div id="security-status" class="status-pill pill-danger">Defense: INACTIVE</div>
+        <button id="toggle-security" class="btn" style="padding: 0.5rem 1.5rem; margin-left: 1rem;">Toggle Mitigation</button>
+        <button id="openLibraryBtn" class="btn" style="background: #000; border: 1px solid #fff; padding: 0.5rem 1.5rem;">Payload Library</button>
+
+        <div class="playground-wrapper">
+            <div class="panel">
+                <h3>1. Attacker Console</h3>
+                <textarea id="payloadInput" placeholder="Load a vector from the library..."></textarea>
+                <button id="injectBtn" class="btn" style="width: 100%; letter-spacing: 2px;">Deploy Payload</button>
+            </div>
+
+            <div class="panel victim-panel">
+                <h3>2. Victim (SocialApp)</h3>
+                <div id="comment-display" class="victim-window">
+                    <div class="comment">System: SocialApp secure boot complete. User data ready.</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h3>3. Technical Deconstruction</h3>
+                <div id="dynamic-analysis" class="analysis-content">
+                    <p style="color: #ffffff; font-style: italic;">> Initialize a payload to review specific vulnerability architecture...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-column" style="margin-top: 10rem; max-width: 800px; margin: auto;">
+            <div id="story-top">
+                <h2 class="animate-on-scroll">The Project Story</h2>
+                <p class="animate-on-scroll">The XSS Live Lab was engineered to provide a visual bridge between offensive payloads and defensive coding. It focuses on DOM-based XSS, the most common vector in modern JavaScript-heavy applications. By providing a real-time playground, I bridge the conceptual understanding of vulnerabilities with their actual execution on the Document Object Model.</p>
+            </div>
+            
+            <div id="arch-top" style="margin-top: 4rem;">
+                <h2 class="animate-on-scroll">Architecture</h2>
+                <p class="animate-on-scroll">The lab uses a vanilla JavaScript engine that toggles between <code>innerHTML</code> and <code>textContent</code> nodes. This side-by-side simulation proves that security is often just a matter of choosing the correct API for data rendering. The analysis sidebar is a custom-built event listener that interprets the loaded payload and serves a curated security report.</p>
+                
+            </div>
+
+            <div id="trench-top" style="margin-top: 4rem;">
+                <h2 class="animate-on-scroll">The Trenches</h2>
+                <p class="animate-on-scroll">The biggest technical hurdle was creating a "controlled explosion." We had to ensure that when a user executes a "UI Defacement" script, it only affects the simulated Victim Window and doesn't crash the entire portfolio's runtime. It required strict scoping and precise event handling to keep the lab dangerous yet perfectly contained.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="project-footer animate-on-scroll">
+        <a href="index.html" class="btn">Return to Portfolio</a>
+    </footer>
+
+    <div id="payload-modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #000; padding-bottom: 1rem; margin-bottom: 2rem;">
+                <h2 style="font-family: 'Bebas Neue'; font-size: 2.5rem;">Payload Library</h2>
+                <button id="closeModalBtn" style="background:none; border:none; font-size: 2rem; cursor:pointer;">&times;</button>
+            </div>
+            
+            <div class="tutorial-box">
+                <strong>How to use this Library:</strong><br>
+                1. Browse the 30 offensive vectors below. Hover over a card to see the attack vector's intent.<br>
+                2. Click a card to load the code into the **Attacker Console**. The **Technical Deconstruction** will update automatically.<br>
+                3. Click **Deploy Payload** to see the result in the **Victim View**. Toggle **Mitigation** to see how modern sanitization neutralizes the attack.
+            </div>
+
+            <div id="library-root" class="payload-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        const libraryData = [
+            { 
+                title: "Standard Alert", 
+                code: "<script>alert('XSS')<\/script>", 
+                desc: "Basic verification of the JavaScript execution path.",
+                logic: "The script tag informs the browser that the following string is code. When an application accepts this as HTML, it executes the command.",
+                bad: "With mitigation disabled, the browser parses the script as a valid instruction. An attacker could steal tokens or redirect the user.",
+                good: "Mitigation treats the string as plain text. The script is rendered visually as a comment but is never executed.",
+                dummies: "If you don't clean user input, the browser treats it as a developer's instruction. When you use innerHTML, the browser assumes you already cleaned the data."
+            },
+            { 
+                title: "Img Error", 
+                code: "<img src=x onerror=alert(1)>", 
+                desc: "Event-handler bypass for script-tag filters.",
+                logic: "Attackers utilize secondary HTML attributes (like 'onerror') when primary tags are filtered. It relies on native error-handling logic.",
+                bad: "The browser fails to fetch resource 'x'. This failure triggers the 'onerror' event, which instantly executes the malicious payload.",
+                good: "By escaping HTML tags, the browser never attempts to load the image. The entire payload is rendered as a harmless string.",
+                dummies: "This exploit targets the 'automatic' nature of the web. It hides code inside a visual element, counting on the browser to try to fix the broken image and execute the code in the process."
+            },
+            { 
+                title: "UI Deface", 
+                code: "<script>document.body.style.background='red'<\/script>", 
+                desc: "Manipulation of the Document Object Model (DOM).",
+                logic: "Focuses on the Style object. Demonstrates that if an attacker can run script, they can fundamentally rewrite the appearance of the site.",
+                bad: "The attacker modifies global CSS. This could be used to create invisible overlays or to make the site appear untrustworthy.",
+                good: "The background remains static. The script is captured as a text node, preventing unauthorized modification of layout properties.",
+                dummies: "Because the site didn't double-check the 'comment,' the user was allowed to rewrite the visual rules of the page. Secure coding locks the CSS so only the developer can change it."
+            },
+            { 
+                title: "Cookie Sniffer", 
+                code: "<script>console.log(document.cookie)<\/script>", 
+                desc: "Unauthorized access to session data.",
+                logic: "The 'document.cookie' object contains sensitive identifiers. This payload attempts to read that data for exfiltration.",
+                bad: "The hacker gains visibility into session state. This is the first step in a 'Session Hijack' attack.",
+                good: "The browser's security context prevents the code from running. The cookie remains private and inaccessible.",
+                dummies: "Cookies are your site's ID cards. If an attacker can get the browser to 'speak' for them, they can ask the browser to show them your ID. Sanitizing input keeps that ID card in your pocket."
+            },
+            { 
+                title: "SVG Vector", 
+                code: "<svg onload=alert(1)>", 
+                desc: "Exploiting XML-based graphic rendering.",
+                logic: "SVG files can contain internal scripts. When rendered directly into HTML, its 'onload' event fires like any other tag.",
+                bad: "The graphic renders and its internal logic executes immediately. This is often used to hide scripts from standard HTML filters.",
+                good: "The SVG tags are escaped and rendered as text. The browser treats it as characters rather than a graphic document.",
+                dummies: "Not all code looks like code; sometimes it looks like a drawing. Because SVG is 'live' code, it needs the same strict cleaning as a standard script tag."
+            },
+            { title: "Details Expansion", code: "<details open ontoggle=alert(1)>", desc: "Interactive HTML5 exploitation.", logic: "Uses the 'ontoggle' event fire on render.", bad: "Interactive trigger fire.", good: "Rendered as static.", dummies: "Dropdown menus carry behaviors. If a user posts a menu, they can attach 'work' to it." },
+            { title: "Video Fail", code: "<video><source onerror=alert(1)>", desc: "Media source failure injection.", logic: "Exploits media error-handling paths.", bad: "Fires on load failure.", good: "Tags ignored.", dummies: "Complex players have dark corners where scripts can hide." },
+            { title: "Input Focus", code: "<input autofocus onfocus=alert(1)>", desc: "Automated event fire.", logic: "Uses autofocus to trigger without interaction.", bad: "Instant fire on page load.", good: "Not rendered.", dummies: "Convenience features like autofocus can be weaponized into remote controls." },
+            { title: "Legacy Marquee", code: "<marquee onstart=alert(1)>", desc: "Deprecated tag exploitation.", logic: "Legacy event handler fire.", bad: "Compatibility-based loophole.", good: "Rendered as text.", dummies: "Old tags are a playground for hackers. Modern browsers still support the 'Old Web'." },
+            { title: "DOM Highjack", code: "<body onload=alert(1)>", desc: "Global document takeover.", logic: "Attempts to overwrite root body tag.", bad: "Hacker becomes the 'host'.", good: "Structural protection.", dummies: "This is an attempt to rebuild the walls. Sanitization keeps guests in their room." },
+            { title: "Iframe Logic", code: "<iframe src='javascript:alert(1)'></iframe>", desc: "Scripting via frame source.", logic: "Execution via javascript: protocol.", bad: "Frame executes immediately.", good: "Neutralized.", dummies: "Frames are windows. This makes the window show a script instead of a site." },
+            { title: "Link Protocol", code: "<a href='javascript:alert(1)'>Click</a>", desc: "URI scheme exploitation.", logic: "Injects code into href.", bad: "Clicking executes JS.", good: "Plain text.", dummies: "A link is a promise. This promise triggers code instead of travel." },
+            { title: "Table Background", code: "<table background='javascript:alert(1)'>", desc: "Legacy attribute exploit.", logic: "Execution via background attribute.", bad: "Fires during render.", good: "Attribute ignored.", dummies: "Old table rules allowed code in backgrounds. We block that now." },
+            { title: "CSS Expression", code: "<div style='width: expression(alert(1));'>", desc: "Legacy IE CSS injection.", logic: "Utilizes dynamic CSS expressions.", bad: "Fires on compute.", good: "Sanitized.", dummies: "Even style math used to run code. Modern engines block this." },
+            { title: "Form Action", code: "<form action='javascript:alert(1)'>", desc: "Submission hijacking.", logic: "Overrides form destination.", bad: "Submitting runs code.", good: "Action neutralized.", dummies: "The form's destination is changed to a virus." },
+            { title: "Object Data", code: "<object data='javascript:alert(1)'>", desc: "Data attribute exploit.", logic: "Loads script via object container.", bad: "Fires on init.", good: "Not created.", dummies: "Objects are for plugins. Plugins have dangerous permissions." },
+            { title: "Embed Payload", code: "<embed src='javascript:alert(1)'>", desc: "Plugin source injection.", logic: "Uses embed source for execution.", bad: "Fires on load.", good: "Neutralized.", dummies: "Embeds are native content. Hackers smuggle code here." },
+            { title: "Meta Refresh", code: "<meta http-equiv='refresh' content='0;url=javascript:alert(1)'>", desc: "Auto-redirection exploit.", logic: "Uses meta-refresh for auto-trigger.", bad: "Redirects to script.", good: "Meta ignored.", dummies: "An automatic forwarding service for viruses." },
+            { title: "Style URL", code: "<div style='background: url(\"javascript:alert(1)\")'>", desc: "CSS URL scheme injection.", logic: "Hides script in image URL.", bad: "Execution on fetch.", good: "URL sanitized.", dummies: "Browser thinks it's a picture; it's actually a script." },
+            { title: "XML Island", code: "<xml id='x'><script>alert(1)</script></xml>", desc: "Legacy XML data island.", logic: "Uses XML tags to house scripts.", bad: "Parsed as active data.", good: "Rendered as text.", dummies: "XML islands were data lockers. Hackers hide bombs inside." },
+            { title: "Base Redirect", code: "<base href='javascript:alert(1)//'>", desc: "Relative path hijacking.", logic: "Modifies site root URL.", bad: "All relative links fire code.", good: "Base tag ignored.", dummies: "This changes the site's address to a piece of code." },
+            { title: "Audio Fail", code: "<audio src=x onerror=alert(1)>", desc: "Media error handler.", logic: "Fires on audio load failure.", bad: "Auto-execution.", good: "Tags escaped.", dummies: "Music players have the same bugs as video players." },
+            { title: "Keygen Vector", code: "<keygen onfocus=alert(1)>", desc: "Deprecated tag exploit.", logic: "Uses cert-gen tag for events.", bad: "Fires on interaction.", good: "Tag ignored.", dummies: "A security tag was used to break security." },
+            { title: "Comment Hide", code: "", desc: "Bypassing regex filters.", logic: "Hides script inside comments.", bad: "Script survives stripping.", good: "Brackets escaped.", dummies: "Hackers hide code in comments to fool the security guard." },
+            { title: "Button Action", code: "<button formaction='javascript:alert(1)'>", desc: "Action override.", logic: "Changes specific button logic.", bad: "Clicking runs script.", good: "Neutralized.", dummies: "This changes 'Send' to 'Run Virus'." },
+            { title: "Map Area", code: "<area href='javascript:alert(1)'>", desc: "Image map hijacking.", logic: "Scripts in clickable shapes.", bad: "Clicking image fires code.", good: "Neutralized.", dummies: "Clicking a photo triggers a script." },
+            { title: "Editable Focus", code: "<div contenteditable onfocus=alert(1)>", desc: "User-edit interaction.", logic: "Events on editable nodes.", bad: "Fires on edit click.", good: "Attribute ignored.", dummies: "If users edit, they edit the triggers." },
+            { title: "Mousewheel", code: "<div onmousewheel=alert(1)>", desc: "Motion-based trigger.", logic: "Fires on user scroll.", bad: "No click required.", good: "Event not attached.", dummies: "This is a motion sensor trap for code." },
+            { title: "Scroll Element", code: "<div onscroll=alert(1)>", desc: "Navigation-based trigger.", logic: "Fires on internal scroll.", bad: "Fires during navigation.", good: "Neutralized.", dummies: "Navigating the site shouldn't be dangerous." },
+            { title: "CSS Anim", code: "<p style='animation: x 1s' onanimationstart=alert(1)>", desc: "Style animation fire.", logic: "JS via CSS event.", bad: "Fires on style compute.", good: "Animation ignored.", dummies: "A movement shouldn't run a script." }
+        ];
+
+        let securityOn = false;
+
+        // Initialize Library
+        function initLibrary() {
+            const root = document.getElementById('library-root');
+            root.innerHTML = '';
+            libraryData.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'payload-card';
+                card.innerHTML = `
+                    <div class="payload-desc">${item.desc}</div>
+                    <strong>${item.title}</strong>
+                    <code>${item.code.replace(/</g, "&lt;")}</code>
+                `;
+                card.onclick = () => {
+                    document.getElementById('payloadInput').value = item.code;
+                    document.getElementById('dynamic-analysis').innerHTML = `
+                        <h5>Hacker Logic:</h5><p>${item.logic}</p>
+                        <div class="logic-card"><h5 style="color:#ff3333;">Security Status: INACTIVE</h5><p>${item.bad}</p></div>
+                        <div class="logic-card" style="border-color:#00ff00;"><h5 style="color:#00ff00;">Security Status: ACTIVE</h5><p>${item.good}</p></div>
+                        <h5>Technical Deconstruction:</h5><p style="color:#ffffff;">${item.dummies}</p>`;
+                    document.getElementById('payload-modal').style.display = 'none';
+                };
+                root.appendChild(card);
+            });
+        }
+
+        // UI Event Listeners
+        document.getElementById('openLibraryBtn').onclick = () => document.getElementById('payload-modal').style.display = 'block';
+        document.getElementById('closeModalBtn').onclick = () => document.getElementById('payload-modal').style.display = 'none';
+        
+        document.getElementById('toggle-security').onclick = () => {
+            securityOn = !securityOn;
+            const status = document.getElementById('security-status');
+            status.textContent = securityOn ? "Defense: ACTIVE" : "Defense: INACTIVE";
+            status.className = securityOn ? "status-pill pill-success" : "status-pill pill-danger";
+        };
+
+        document.getElementById('injectBtn').onclick = () => {
+            const payload = document.getElementById('payloadInput').value;
+            const display = document.getElementById('comment-display');
+            const div = document.createElement('div');
+            div.className = 'comment';
+            if (securityOn) {
+                div.textContent = payload;
+            } else {
+                div.innerHTML = payload;
+            }
+            display.appendChild(div);
+            display.scrollTop = display.scrollHeight;
+        };
+
+        initLibrary();
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>

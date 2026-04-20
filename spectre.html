@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Specter | Joaquin Tolentino</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #ffffff;
+            --border-dim: #222222;
+            --text-dim: #888888;
+        }
+
+        /* Standard Minimal Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 300; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+        
+        body { 
+            background: var(--bg); 
+            color: var(--accent); 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4rem; }
+
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 2.5rem 0; border-bottom: 1px solid var(--border-dim); }
+        .logo { font-size: 0.8rem; letter-spacing: 0.4rem; text-transform: uppercase; color: var(--text-dim); }
+        .return-link { color: inherit; text-decoration: none; font-size: 0.75rem; letter-spacing: 0.1rem; transition: opacity 0.3s; }
+        .return-link:hover { opacity: 0.5; }
+
+        /* Lab Header */
+        header { padding: 8rem 0 6rem; border-bottom: 1px solid var(--border-dim); }
+        .meta-category { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.2rem; margin-bottom: 1rem; }
+        .main-title { font-size: 3.5rem; line-height: 1.1; margin-bottom: 2rem; }
+        .lead-text { font-size: 1.25rem; color: #aaa; max-width: 700px; }
+
+        /* Operational Hero Grid */
+        .lab-hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 4rem;
+            margin: 6rem 0;
+            padding-bottom: 6rem;
+            border-bottom: 1px solid var(--border-dim);
+        }
+
+        .signal-stage { 
+            border: 1px solid var(--border-dim); 
+            background: #000; 
+            height: 500px; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            overflow: hidden;
+        }
+        
+        canvas { max-width: 90%; max-height: 90%; image-rendering: pixelated; border: 1px solid #111; }
+        
+        .status-hud { 
+            position: absolute; 
+            bottom: 1rem; 
+            right: 1.5rem; 
+            font-size: 0.65rem; 
+            letter-spacing: 0.1rem; 
+            color: #444; 
+            text-transform: uppercase;
+        }
+
+        /* Control Panel */
+        .control-panel { display: flex; flex-direction: column; gap: 2.5rem; }
+        .label { font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.15rem; text-transform: uppercase; margin-bottom: 0.75rem; }
+        
+        .btn-lab { 
+            display: block;
+            width: 100%;
+            padding: 1.25rem; 
+            border: 1px solid var(--accent); 
+            background: transparent; 
+            color: var(--accent); 
+            cursor: pointer; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.3rem; 
+            transition: all 0.3s; 
+            text-align: center;
+        }
+        .btn-lab:hover { background: var(--accent); color: var(--bg); }
+        
+        /* Information Architecture & SOP */
+        .technical-documentation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            margin-bottom: 8rem;
+        }
+
+        .docs-column h2 { font-size: 1.8rem; margin-bottom: 2.5rem; color: var(--accent); }
+        .docs-column p { margin-bottom: 2rem; color: #ccc; }
+        
+        .list-sop { list-style: none; counter-reset: sop; }
+        .list-sop li { position: relative; padding-left: 3rem; margin-bottom: 2.5rem; color: #ccc; }
+        .list-sop li::before { 
+            counter-increment: sop; 
+            content: counter(sop, decimal-leading-zero); 
+            position: absolute; 
+            left: 0; top: 0; 
+            color: var(--text-dim); 
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+        }
+
+        .math-block { background: #000; padding: 2rem; border: 1px solid var(--border-dim); margin: 3rem 0; font-family: monospace; font-size: 1rem; text-align: center; color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <nav class="wrapper">
+        <div class="logo">FORENSIC_LAB / JT_07</div>
+        <a href="index.html" class="return-link">RETURN_TO_INDEX</a>
+    </nav>
+
+    <main class="wrapper">
+        <header>
+            <p class="meta-category">Experimental Signal Processing</p>
+            <h1 class="main-title">Project Specter</h1>
+            <p class="lead-text">
+                An advanced forensic utility engineered to convert digital visual data into acoustic frequency domains, effectively embedding a graphical "ghost" into a standard audio signal.
+            </p>
+        </header>
+
+        <div class="lab-hero-grid">
+            <div class="signal-stage">
+                <canvas id="mainCanvas" width="400" height="200"></canvas>
+                <div class="status-hud" id="statusHud">SESSION_IDLE / STANDBY</div>
+            </div>
+
+            <div class="control-panel">
+                <div>
+                    <div class="label">Source Selection</div>
+                    <input type="file" id="fileInput" style="font-size: 0.7rem; color: var(--text-dim); background: transparent; width: 100%;">
+                </div>
+                <div>
+                    <div class="label">Initiate Synthesis</div>
+                    <button id="processBtn" class="btn-lab">Encode to Freq</button>
+                </div>
+                
+                <div style="margin-top: auto; border-top: 1px solid var(--border-dim); padding-top: 2rem;">
+                    <div class="label">Operational Guide (Summary)</div>
+                    <p style="font-size: 0.8rem; color: #666; line-height: 1.6;">
+                        1. Select input file.<br>
+                        2. Initiate signal encoding.<br>
+                        3. The system will synthesize a 5-second carrier signal.<br>
+                        4. Playback confirms successful IFFT mapping.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <section class="technical-documentation">
+            <div class="docs-column">
+                <h2>The Architecture</h2>
+                <p>
+                    Specter operates on the principle of frequency-domain manipulation, treating a digital image as a physical coordinate system. The vertical (Y) axis maps to frequency distribution, while the horizontal (X) axis represents time. The luminance of any given pixel dictates the amplitude (volume) of its corresponding frequency.
+                </p>
+                <p>
+                    The synthesis utilizes a modified Inverse Fast Fourier Transform (IFFT) logic. Instead of performing a standard transformation, the engine employs a logarithmic oscillator bank. This aligns the output frequencies (ranging from 200Hz to 20kHz) to the logarithmic nature of human hearing perception. Each pixel essentially triggers a sine wave for a precise duration:
+                </p>
+                
+                <div class="math-block">
+                    s(t) = Σ An sin(2π fn t) * brightness
+                </div>
+                
+                <p>
+                    This is computationally expensive, as thousands of oscillators must be calculated and summed in real-time. By utilizing logarithmic scaling, we ensure that higher frequencies are not disproportionately represented in the acoustic carrier.
+                </p>
+            </div>
+
+            <div class="docs-column">
+                <h2>System SOP / Tutorial</h2>
+                <ol class="list-sop">
+                    <li>
+                        <h3>Prepare Source Image</h3>
+                        Prepare a sharp, high-contrast monochrome image. High frequency definition is achieved by using areas of pure white against deep black. The system resolves images at 400x200 pixel resolution.
+                    </li>
+                    <li>
+                        <h3>Load Source</h3>
+                        Utilize the 'Source Selection' interface to load your prepared image. The engine will render a pre-scan onto the signal stage for operational verification.
+                    </li>
+                    <li>
+                        <h3>Initiate Synthesis</h3>
+                        Execute 'Encode to Freq'. The system will iterate through all 80,000 pixels in the image matrix, assigning sine wave parameters. The forensic analysis reveals that this step requires significant browser processing resources.
+                    </li>
+                    <li>
+                        <h3>Forensic Analysis</h3>
+                        Upon successful playback, the resulting audio is a 5-second "textural" noise burst. To verify the hidden visual payload, analyze this audio stream using a professional FFT spectrogram utility (e.g., Audacity or specialized signal intelligence software).
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="wrapper" style="padding: 4rem 0; border-top: 1px solid var(--border-dim); text-align: center;">
+        <p style="font-size: 0.7rem; color: #333; letter-spacing: 0.1rem;">END_OF_DOCUMENT / JT_SYSTEMS_GLOBAL</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+        const fileInput = document.getElementById('fileInput');
+        const processBtn = document.getElementById('processBtn');
+        const statusHud = document.getElementById('statusHud');
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 01 // Image Pre-scan Handler
+        fileInput.onchange = (e) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Normalize to operational resolution (400x200)
+                    ctx.clearRect(0,0,400,200);
+                    ctx.drawImage(img, 0, 0, 400, 200);
+                    statusHud.textContent = `SOURCE_LOADED / [${img.width}x${img.height}]`;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        };
+
+        // 02 // Frequency Encoding Engine (SOP Step 3)
+        processBtn.onclick = () => {
+            statusHud.textContent = "SYNTHESIZING_SIGNAL... [0-5s]";
+            
+            // Set 5-second duration matrix
+            const duration = 5;
+            const sampleRate = audioCtx.sampleRate;
+            const numSamples = sampleRate * duration;
+            const buffer = audioCtx.createBuffer(1, numSamples, sampleRate);
+            const data = buffer.getChannelData(0);
+
+            // Get matrix image data (400x200)
+            const imageData = ctx.getImageData(0, 0, 400, 200);
+
+            // Configure forensic frequency range
+            const minFreq = 200; // Bass-range forensic floor
+            const maxFreq = 20000; // Treble-range forensic ceiling
+
+            // Time step calculation: We need to update time within the nested loop
+            for (let y = 0; y < 200; y++) {
+                // Logarithmic frequency mapping for human perception
+                const freq = minFreq * Math.pow(maxFreq / minFreq, (200 - y) / 200);
+                const angularFreq = 2 * Math.PI * freq;
+
+                for (let x = 0; x < 400; x++) {
+                    const brightness = imageData.data[(y * 400 + x) * 4] / 255;
+
+                    // Execute IFFT logic only on pixels exceeding luminance threshold
+                    if (brightness > 0.1) {
+                        const startTime = (x / 400) * duration;
+                        const endTime = ((x + 1) / 400) * duration;
+                        const startSample = Math.floor(startTime * sampleRate);
+                        const endSample = Math.floor(endTime * sampleRate);
+
+                        // Synthesis summation loop
+                        for (let s = startSample; s < endSample; s++) {
+                            const t = s / sampleRate;
+                            // Additive sine wave summation
+                            data[s] += Math.sin(angularFreq * t) * brightness * 0.01;
+                        }
+                    }
+                }
+            }
+
+            // Playback confirmation loop
+            const source = audioCtx.createBufferSource();
+            source.buffer = buffer;
+            source.connect(audioCtx.destination);
+            source.start();
+            statusHud.textContent = "SIGNAL_ACTIVE / Forensics complete.";
+        };
+    </script>
+</body>
+</html>

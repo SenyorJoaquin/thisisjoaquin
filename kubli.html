@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubli | Joaquin Tolentino</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="project-page">
+    <nav class="navbar solid-nav">
+        <a href="index.html" class="back-link">← Back to Index</a>
+        <div class="logo">JT.</div>
+    </nav>
+
+    <header class="article-header">
+        <p class="article-category animate-on-scroll">Cryptography & Steganography</p>
+        <h1 class="article-title animate-on-scroll">Kubli</h1>
+        <div class="article-meta animate-on-scroll" style="display: flex; gap: 2rem; justify-content: center; align-items: center;">
+            <span><strong>Award:</strong> Inabel - Best Solution</span>
+            <span><strong>Stack:</strong> Python</span>
+            <a href="https://github.com/SenyorJoaquin/Kubli" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem; background: #333;">GitHub Repository</a>
+        </div>
+    </header>
+
+    <div class="article-hero-img animate-on-scroll">
+        <img src="images/Kubli Poster.png" alt="Kubli Encryption Application" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    </div>
+
+    <main class="article-content">
+        <div class="content-column">
+            <p class="lead animate-on-scroll">A sophisticated steganography tool that allows users to hide encrypted text within image files.</p>
+            <h2 class="animate-on-scroll">The Architecture</h2>
+            <p class="animate-on-scroll">Built using Python, Kubli utilizes Least Significant Bit (LSB) steganography. It manipulates the binary data of pixels to store hidden messages that are visually undetectable to the human eye, coupled with a secondary encryption layer for maximum privacy.</p>
+            <h2 class="animate-on-scroll">The Trenches</h2>
+            <p class="animate-on-scroll">Maintaining image integrity while injecting data was the core hurdle. I optimized the bit-shifting logic to ensure that even large blocks of text do not produce visible artifacts or noise in the carrier image.</p>
+        </div>
+    </main>
+
+    <footer class="project-footer animate-on-scroll">
+        <a href="index.html" class="btn">Return to Portfolio</a>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

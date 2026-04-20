@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saling-Kamay | Joaquin Tolentino</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body class="project-page">
+    <nav class="navbar solid-nav">
+        <a href="index.html" class="back-link">← Back to Index</a>
+        <div class="logo">JT.</div>
+    </nav>
+
+    <header class="article-header">
+        <p class="article-category animate-on-scroll">Assistive Technology & NLP</p>
+        <h1 class="article-title animate-on-scroll">Saling-Kamay</h1>
+        <div class="article-meta animate-on-scroll" style="display: flex; gap: 2rem; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 1.5rem;">
+            <span><strong>Tech:</strong> KP-LSTM / Machine Learning</span>
+            <span><strong>Stack:</strong> Python, MediaPipe, TensorFlow</span>
+            <a href="https://github.com/SenyorJoaquin/Saling-Kamay-Website" target="_blank" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem; background: #333; color: #fff; text-decoration: none; border: 1px solid #444;">GitHub Repository</a>
+        </div>
+    </header>
+
+    <div class="article-hero-img animate-on-scroll">
+        <img src="images/Saling-Kamay final design poster - April 2025.png" alt="Saling Kamay NLP System" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+    </div>
+
+    <main class="article-content">
+        <div class="content-column">
+            <p class="lead animate-on-scroll">A foundational research project and assistive system designed to bridge the communication gap between the Deaf and hearing communities in the Philippines through Filipino Sign Language (FSL) translation.</p>
+            
+            <h2 class="animate-on-scroll">The Context</h2>
+            <p class="animate-on-scroll">The lack of research advancements in assistive technologies centered around FSL has created a massive awareness gap. Most existing systems overlook the unique grammatical structure and cultural nuances of the language, utilizing narrow datasets that fail to reflect the dynamic vocabulary of the Filipino Deaf community.</p>
+
+            <h2 class="animate-on-scroll">The Architecture</h2>
+            <p class="animate-on-scroll">Saling-Kamay is built upon a custom-developed video dataset of over 100 conversational FSL signs. The system utilizes two primary technical prototypes: (1) a <strong>Hand Keypoints and Long Short-Term Memory (KP-LSTM)</strong> gesture recognition model to capture the fluid movement of signs, and (2) a specialized <strong>Natural Language Processing (NLP)</strong> algorithm designed for FSL-to-Filipino grammar translation.</p>
+            
+            <h2 class="animate-on-scroll">The Trenches</h2>
+            <p class="animate-on-scroll">Developing a foundational resource meant starting from scratch. Mapping FSL’s distinct grammar into a predictive model required extensive dataset curation and technical stress-testing. By focusing on hand keypoint tracking rather than just raw video frames, the model achieves higher accuracy in recognizing the structural nuances that define FSL as a complete and independent language.</p>
+        </div>
+    </main>
+
+    <footer class="project-footer animate-on-scroll">
+        <a href="index.html" class="btn">Return to Portfolio</a>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+/* Color Palette & Variables */
+:root {
+    --bg-color: #fcfcfc;
+    --text-main: #111111;
+    --text-muted: #666666;
+    --accent: #000000;
+    --border-color: #eaeaea;
+}
+
+/* Base Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Scroll Lock for the Gatekeeper Puzzle */
+body.locked {
+    overflow: hidden;
+}
+
+/* Typography */
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 0.9;
+    margin-bottom: 3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0; width: 100%;
+    padding: 1.5rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(252, 252, 252, 0.75);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 100;
+    transition: background 0.4s ease, padding 0.4s ease;
+}
+.navbar.scrolled {
+    padding: 1rem 5%;
+    background: rgba(252, 252, 252, 0.95);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+.solid-nav { background: var(--bg-color); border-bottom: 1px solid var(--border-color); }
+.logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 2px; }
+.nav-links { list-style: none; display: flex; gap: 2.5rem; }
+.nav-links a, .back-link {
+    text-decoration: none; color: var(--text-main); font-size: 0.85rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
+}
+.nav-links a:hover, .back-link:hover { color: var(--text-muted); }
+
+/* Hero Section */
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; padding: 0 5%; align-items: center; }
+.hero-content { padding-right: 4rem; margin-top: 4rem; }
+.subtitle { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 1rem; }
+.title { font-family: 'Bebas Neue', sans-serif; font-size: 8rem; line-height: 0.85; margin-bottom: 1.5rem; letter-spacing: 1px; text-transform: uppercase; }
+.description { font-size: 1.1rem; color: var(--text-muted); max-width: 420px; margin-bottom: 2.5rem; }
+
+/* Buttons */
+.btn {
+    display: inline-block; padding: 1rem 2.5rem; background-color: var(--accent);
+    color: #fff; text-decoration: none; text-transform: uppercase;
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 1.5px; transition: 0.3s ease; border: none; cursor: pointer;
+}
+.btn:hover { background-color: #333; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+/* Image Placeholders */
+.hero-image { height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0 2rem 2rem; }
+.image-placeholder { width: 100%; height: 85%; background-color: #ebebeb; display: flex; align-items: center; justify-content: center; color: #999; text-transform: uppercase; letter-spacing: 1px; text-align: center; padding: 1rem; }
+
+/* General Sections */
+.section { padding: 8rem 5%; border-top: 1px solid var(--border-color); }
+
+/* Work Section (Grid) */
+.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; }
+.project-card { text-decoration: none; color: inherit; display: block; group; }
+.card-image { width: 100%; aspect-ratio: 4/3; background-color: #ebebeb; display: flex; align-items: center; justify-content: center; color: #999; margin-bottom: 1.5rem; transition: transform 0.4s ease; text-align: center; padding: 1rem; }
+.project-card:hover .card-image { transform: scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+.card-meta h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 1px; margin-bottom: 0.2rem; }
+.card-meta p { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+/* About Section */
+.about-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; }
+.about-text p { font-size: 1.25rem; color: var(--text-muted); margin-bottom: 1.5rem; max-width: 700px; }
+.about-image-wrapper { margin: 3rem 0; height: 50vh; width: 100%; }
+
+/* Tech Stack Section */
+.tech-stack { margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 2.5rem; }
+.tech-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; margin-bottom: 1.5rem; letter-spacing: 1px; text-transform: uppercase; }
+.tech-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+.tech-item { 
+    display: flex; align-items: center; gap: 0.75rem; 
+    padding: 0.75rem 1.5rem; border: 1px solid var(--border-color); 
+    font-size: 0.85rem; font-weight: 600; text-transform: uppercase; 
+    letter-spacing: 1px; transition: 0.3s ease; cursor: default;
+}
+.tech-item i { font-size: 1.2rem; }
+.tech-item:hover { background-color: var(--text-main); color: var(--bg-color); border-color: var(--text-main); transform: translateY(-2px); }
+
+/* SK SOLUTIONS MANIFESTO SECTION */
+.manifesto-section { background-color: var(--text-main); color: var(--bg-color); padding: 10rem 5%; border-top: none; }
+.manifesto-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; max-width: 1400px; margin: 0 auto; }
+.manifesto-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px; color: #888; margin-bottom: 2rem; }
+.manifesto-title { font-family: 'Bebas Neue', sans-serif; font-size: 8rem; line-height: 0.85; text-transform: uppercase; letter-spacing: 2px; color: #fff; }
+.manifesto-subtitle { font-size: 2rem; font-weight: 300; line-height: 1.3; margin-bottom: 3rem; color: #fff; max-width: 800px; }
+.manifesto-text p { font-size: 1.25rem; color: #cccccc; margin-bottom: 2rem; max-width: 750px; line-height: 1.8; }
+
+/* Manifesto Button */
+.manifesto-btn { margin-top: 2rem; background-color: var(--bg-color); color: var(--text-main); border: 1px solid var(--bg-color); }
+.manifesto-btn:hover { background-color: transparent; color: var(--bg-color); }
+
+/* Manifesto Image */
+.manifesto-feature-image { max-width: 1400px; margin: 6rem auto 0; height: 60vh; width: 100%; }
+.dark-placeholder { background-color: #1a1a1a; color: #444; width: 100%; height: 100%; border: 1px solid #333; display: flex; align-items: center; justify-content: center; text-transform: uppercase; letter-spacing: 2px; }
+
+/* Contact Section */
+.contact-wrapper p { font-size: 1.5rem; margin-bottom: 2rem; }
+
+/* =========================================
+   ARTICLE / PROJECT PAGE STYLES
+   ========================================= */
+.project-page { padding-top: 6rem; }
+.article-header { padding: 4rem 5% 2rem; text-align: center; max-width: 1000px; margin: 0 auto; }
+.article-category { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); margin-bottom: 1rem; }
+.article-title { font-family: 'Bebas Neue', sans-serif; font-size: 6rem; line-height: 0.9; text-transform: uppercase; margin-bottom: 2rem; }
+.article-meta { display: flex; justify-content: center; gap: 2rem; font-size: 0.85rem; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 1rem 0; }
+.article-meta strong { color: var(--text-muted); text-transform: uppercase; margin-right: 5px; }
+
+.article-hero-img { width: 90%; height: 70vh; background-color: #ebebeb; margin: 0 auto 4rem; display: flex; align-items: center; justify-content: center; color: #999; text-transform: uppercase; letter-spacing: 1px; text-align: center; padding: 1rem; }
+
+.article-content { max-width: 800px; margin: 0 auto; padding: 0 5%; }
+.article-content .lead { font-size: 1.5rem; font-weight: 300; line-height: 1.5; margin-bottom: 3rem; }
+.article-content h2 { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; margin: 3rem 0 1rem; text-transform: uppercase; letter-spacing: 1px; }
+.article-content p { font-size: 1.1rem; color: #333; margin-bottom: 1.5rem; }
+.article-content blockquote { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; line-height: 1.1; margin: 4rem 0; padding-left: 2rem; border-left: 8px solid var(--accent); text-transform: uppercase; }
+
+.project-footer { text-align: center; padding: 6rem 5%; border-top: 1px solid var(--border-color); margin-top: 4rem; }
+
+/* =========================================
+   ANIMATION CLASSES
+   ========================================= */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+.animate-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+
+/* =========================================
+   GATEKEEPER PUZZLE OVERLAY
+   ========================================= */
+.gatekeeper {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    background-color: var(--bg-color); z-index: 9999;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+.gatekeeper.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+.gatekeeper-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+.gatekeeper-title { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; line-height: 1; margin-bottom: 0.5rem; text-transform: uppercase; }
+.gatekeeper-subtitle { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 2rem; }
+
+/* The Grid */
+.puzzle-board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 5px; background-color: var(--border-color); padding: 5px;
+    border: 2px solid var(--text-main); margin-bottom: 1rem;
+}
+
+/* The Tiles */
+.puzzle-tile {
+    display: flex; align-items: center; justify-content: center;
+    background-color: var(--text-main); color: var(--bg-color);
+    font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem;
+    cursor: pointer; user-select: none; transition: transform 0.1s ease, background-color 0.2s ease;
+}
+.puzzle-tile.empty { background-color: transparent; cursor: default; }
+.puzzle-tile:hover:not(.empty) { background-color: #333; transform: scale(0.98); }
+
+/* The Taunt & Surrender Zone */
+.surrender-zone {
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 1; transition: opacity 0.5s ease; margin-top: 1.5rem;
+}
+.surrender-zone.hidden { opacity: 0; pointer-events: none; }
+
+.taunt-message {
+    font-size: 1.25rem; font-weight: 600; font-style: italic;
+    color: var(--text-main); margin-bottom: 1.5rem; letter-spacing: 0.5px;
+}
+
+/* Evident Give Up Button */
+.evident-give-up-btn {
+    background-color: #ff3333; color: #fff; border: 2px solid #ff3333;
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+    padding: 1rem 3rem; text-transform: uppercase; letter-spacing: 2px;
+    cursor: pointer; transition: 0.3s ease; box-shadow: 0 10px 20px rgba(255, 51, 51, 0.2);
+}
+.evident-give-up-btn:hover { background-color: #cc0000; border-color: #cc0000; transform: translateY(-3px); box-shadow: 0 15px 25px rgba(204, 0, 0, 0.3); }
+
+/* Mobile Adjustments */
+@media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; text-align: left; }
+    .title { font-size: 5.5rem; }
+    .hero-image { height: 50vh; padding: 2rem 0; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .tech-grid { justify-content: flex-start; }
+    .manifesto-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .manifesto-title { font-size: 6rem; }
+    .manifesto-subtitle { font-size: 1.5rem; }
+    .manifesto-feature-image { height: 40vh; margin-top: 4rem; }
+    
+    .gatekeeper-title { font-size: 3.5rem; }
+    .puzzle-board { grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); }
+    .puzzle-tile { font-size: 2rem; }
+    .taunt-message { font-size: 1rem; text-align: center; padding: 0 1rem; }
+    .evident-give-up-btn { font-size: 1.4rem; padding: 0.8rem 2rem; }
+}
+@media (max-width: 480px) {
+    .nav-links { display: none; }
+}
+

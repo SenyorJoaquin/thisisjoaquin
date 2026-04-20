@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joaquin Tolentino | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+    
+    <script>
+        if (sessionStorage.getItem('portfolioUnlocked') === 'true') {
+            document.write('<style>.gatekeeper { display: none !important; } body.locked { overflow: auto !important; }</style>');
+        }
+    </script>
+</head>
+<body class="locked">
+    
+    <div id="gatekeeper-overlay" class="gatekeeper">
+        <div class="gatekeeper-content">
+            <h2 class="gatekeeper-title">Prove Your Worth.</h2>
+            <p class="gatekeeper-subtitle">Solve this completely unnecessary puzzle to view the portfolio.</p>
+            
+            <div id="puzzle-board" class="puzzle-board"></div>
+            
+            <div id="surrender-zone" class="surrender-zone hidden">
+                <p class="taunt-message">" OH CMON YOU CAN DO BETTER 👻  - Joaquin Tolentino "</p>
+                <button id="give-up-btn" class="evident-give-up-btn">I give up! Just show me the website 🏳️</button>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">JT.</div>
+        <ul class="nav-links">
+            <li><a href="#work">Work</a></li>
+            <li><a href="#sk-solutions">Agency</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="subtitle animate-on-scroll">Software Engineer & Freelance Web Developer</p>
+            <h1 class="title animate-on-scroll" style="transition-delay: 0.1s;">Joaquin<br>Tolentino</h1>
+            <p class="description animate-on-scroll" style="transition-delay: 0.2s;">Merging clean engineering with exceptional UX design to build digital solutions that are powerful, scalable, and highly intuitive.</p>
+            <a href="#work" class="btn animate-on-scroll" style="transition-delay: 0.3s;">View Projects</a>
+        </div>
+        <div class="hero-image animate-on-scroll" style="transition-delay: 0.4s;">
+            <img src="images/profile-picture.jpg" alt="Joaquin Tolentino Portrait" style="width: 80%; height: 80%; object-fit: cover; display: block;">
+        </div>
+    </section>
+
+    <section id="work" class="section">
+        <h2 class="section-title animate-on-scroll">Selected Works</h2>
+        <div class="project-grid">
+            <a href="rebel-atlas.html" class="project-card animate-on-scroll" style="transition-delay: 0.1s;">
+                <div class="card-image"><img src="images/RA_logo_whitetxt_blkbg.png" alt="Rebel Atlas Media" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>Rebel Atlas Media</h3>
+                    <p>Independent Journalism Website</p>
+                </div>
+            </a>
+            <a href="af-compendium.html" class="project-card animate-on-scroll" style="transition-delay: 0.2s;">
+                <div class="card-image"><img src="images/AF.png" alt="AF Compendium" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>AF Compendium</h3>
+                    <p>NGO Communication Hub (267 Orgs)</p>
+                </div>
+            </a>
+            <a href="tcm-booking.html" class="project-card animate-on-scroll" style="transition-delay: 0.3s;">
+                <div class="card-image"><img src="images/tcm.jpg" alt="TCM Booking" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>TCM Booking</h3>
+                    <p>Scheduling System Architecture</p>
+                </div>
+            </a>
+            <a href="kubli.html" class="project-card animate-on-scroll" style="transition-delay: 0.1s;">
+                <div class="card-image"><img src="images/Kubli Poster.png" alt="Kubli Cryptography" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>Kubli</h3>
+                    <p>Cryptography & Encryption Application</p>
+                </div>
+            </a>
+            <a href="saling-kamay.html" class="project-card animate-on-scroll" style="transition-delay: 0.2s;">
+                <div class="card-image"><img src="images/Saling-Kamay Design Poster.png" alt="Saling-Kamay FSL" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>Saling-Kamay</h3>
+                    <p>FSL Translation System</p>
+                </div>
+            </a>
+            <a href="xss-playground.html" class="project-card animate-on-scroll" style="transition-delay: 0.3s;">
+                <div class="card-image"><img src="images/XSS LAB (1).png" alt="XSS Lab" style="width: 100%; height: 100%; object-fit: cover; display: block;"></div>
+                <div class="card-meta">
+                    <h3>XSS Lab</h3>
+                    <p>Technical Training Environment</p>
+                </div>
+            </a>
+            <a href="secret-splitter.html" class="project-card animate-on-scroll" style="transition-delay: 0.1s;">
+                <div class="card-image">
+                    <img src="images/XSS LAB (2).png" alt="Shamir's Secret Splitter" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div class="card-meta">
+                    <h3>Shamir's Secret Splitter</h3>
+                    <p>Visual Cryptography & Pixel XOR Logic</p>
+                </div>
+            </a>
+            <a href="spectre.html" class="project-card animate-on-scroll" style="transition-delay: 0.4s;">
+                <div class="card-image">
+                    <img src="images/XSS LAB (3).png" alt="Project Specter Signal Forensic Engine" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                <div class="card-meta">
+                    <h3>Project Specter</h3>
+                    <p>Forensic Audio Steganography & IFFT Logic</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section id="sk-solutions" class="section manifesto-section">
+        <div class="manifesto-grid">
+            <div class="manifesto-header animate-on-scroll">
+                <p class="manifesto-label">The Agency</p>
+                <h2 class="manifesto-title">SK<br>Solutions.</h2>
+            </div>
+            <div class="manifesto-body animate-on-scroll" style="transition-delay: 0.2s;">
+                <h3 class="manifesto-subtitle">Giving back through technology.</h3>
+                <div class="manifesto-text">
+                    <p>Everyone deserves access to good technology. I started SK Solutions because I saw too many local communities and grassroots organizations struggling with broken websites and ignored systems. They deserve the exact same quality that big companies take for granted.</p>
+                    <p>We build platforms for the people who actually need them. Whether we are helping independent journalists share their stories safely or giving local NGOs a reliable way to communicate, the goal is always the same. We create things that work and make an actual difference in people's lives.</p>
+                    
+                    <a href="agency.html" class="btn manifesto-btn">Read The Full Story</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="manifesto-feature-image animate-on-scroll" style="transition-delay: 0.3s;">
+            <img src="images/agency1.png" alt="SK Solutions Agency Team" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+    </section>
+
+    <section id="about" class="section about-section">
+        <div class="about-grid">
+            <h2 class="section-title animate-on-scroll">The<br>Architect</h2>
+            <div class="about-text">
+                <div class="animate-on-scroll" style="transition-delay: 0.1s;">
+                    <p>A Startup Founder, UI/UX designer, and Software Developer who believes that good design should captivate and delight users, like magic, but with Figma files</p>
+                    <p>I believe minimalism and playfulness can coexist. By incorporating thoughtful details, subtle interactions, and intentional aesthetics, I create experiences that are both functional and engaging.</p>
+                </div>
+                
+                <div class="about-image-wrapper animate-on-scroll" style="transition-delay: 0.2s;">
+                    <img src="images/League of Legends Companion - Joaquin Tolentino.png" alt="Workspace and Design Context" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+                
+                <div class="tech-stack animate-on-scroll" style="transition-delay: 0.3s;">
+                    <h3 class="tech-title">Arsenal & Capabilities</h3>
+                    <div class="tech-grid">
+                        <div class="tech-item"><i class="devicon-python-plain"></i> Python</div>
+                        <div class="tech-item"><i class="devicon-javascript-plain"></i> JavaScript</div>
+                        <div class="tech-item"><i class="devicon-java-plain"></i> Java</div>
+                        <div class="tech-item"><i class="devicon-spring-original"></i> Spring Boot</div>
+                        <div class="tech-item"><i class="devicon-mysql-plain"></i> MySQL</div>
+                        <div class="tech-item"><i class="devicon-html5-plain"></i> HTML</div>
+                        <div class="tech-item"><i class="devicon-css3-plain"></i> CSS</div>
+                        <div class="tech-item"><i class="devicon-wordpress-plain"></i> WordPress</div>
+                        <div class="tech-item"><i class="devicon-figma-plain"></i> Figma</div>
+                        <div class="tech-item"><i class="devicon-flutter-plain"></i> Flutter</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <h2 class="section-title animate-on-scroll">Let's Talk</h2>
+        <div class="contact-wrapper animate-on-scroll" style="transition-delay: 0.2s;">
+            <p>Ready to build something with me? Drop a line.</p>
+            <a href="mailto:joaquin.sison.tolentino@gmail.com" class="btn">Send an Email</a>
+            <div style="margin-top: 2rem; font-weight: 600;">
+                <p>joaquin.sison.tolentino@gmail.com</p>
+                <p>0961-334-2289</p>
+                <p><a href="https://joaquintolentino.netlify.app" style="color: var(--text-main); text-decoration: none;">joaquintolentino.netlify.app</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
