@@ -7,29 +7,9 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
-    
-    <script>
-        if (sessionStorage.getItem('portfolioUnlocked') === 'true') {
-            document.write('<style>.gatekeeper { display: none !important; } body.locked { overflow: auto !important; }</style>');
-        }
-    </script>
 </head>
-<body class="locked">
+<body>
     
-    <div id="gatekeeper-overlay" class="gatekeeper">
-        <div class="gatekeeper-content">
-            <h2 class="gatekeeper-title">Prove Your Worth.</h2>
-            <p class="gatekeeper-subtitle">Solve this completely unnecessary puzzle to view the portfolio.</p>
-            
-            <div id="puzzle-board" class="puzzle-board"></div>
-            
-            <div id="surrender-zone" class="surrender-zone hidden">
-                <p class="taunt-message">" OH CMON YOU CAN DO BETTER 👻  - Joaquin Tolentino "</p>
-                <button id="give-up-btn" class="evident-give-up-btn">I give up! Just show me the website 🏳️</button>
-            </div>
-        </div>
-    </div>
-
     <nav class="navbar">
         <div class="logo">JT.</div>
         <ul class="nav-links">
